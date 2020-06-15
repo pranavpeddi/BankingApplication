@@ -1,17 +1,13 @@
 package com.example.BankingApplicationAPI.Controller;
 
+import com.example.BankingApplicationAPI.Model.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.BankingApplicationAPI.Model.Account;
 import com.example.BankingApplicationAPI.Service.BankingService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping
@@ -45,8 +41,17 @@ public class BankController {
 	bankingService.transfer(fromId,toId,amount);
 	return "success";
 }
-	
-	
-	
 
+	@RequestMapping(method = RequestMethod.POST,value = "/withdraw/{amount}/{id}")
+	public String withdraw(@RequestParam long id,@RequestParam double amount)
+	{
+		bankingService.withDraw(id,amount);
+		return "success";
+	}
+
+	@GetMapping("/statement/{id}")
+	public List<Statement> getStatement(@RequestParam long id)
+	{
+		return bankingService.getAccountStatement(id);
+	}
 }

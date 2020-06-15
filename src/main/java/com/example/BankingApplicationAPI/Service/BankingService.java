@@ -2,8 +2,10 @@ package com.example.BankingApplicationAPI.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.org.apache.bcel.internal.generic.ATHROW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,7 +89,8 @@ public class BankingService {
 			WithDrawOperation withDrawOperation=new WithDrawOperation(date, time,amount,account1);
 			operationsRepository.save(withDrawOperation);
 			Statement st1=new Statement("Transfered", amount, account1.getBalance()-amount, date, account1,time);
-			account1.setBalance(st1.getAmount()-amount);
+			account1.setBalance(account1.getBalance()-amount);
+			statementRepository.save(st1);
 			accountRepository.save(account1);
 			Account account2=accountRepository.findByAID(toId);
 			DepositOperation depositOperation=new DepositOperation(date,time,amount,account2);
@@ -95,12 +98,52 @@ public class BankingService {
 			Statement st2=new Statement("Credited", amount, account2.getBalance()+amount, date, account2,time);
 			statementRepository.save(st2);
 			account2.setBalance(account2.getBalance()+amount);
+			accountRepository.save(account2);
 			return "transfered successfully";
 			
 		}
 		
 		return "null";
 	}
-	
+
+
+	public void withDraw(long id,double amount)
+	{
+		Account account=accountRepository.findByAID(id);
+		if(account.getBalance()<0) {
+			throw new RuntimeException("you cannot withdraw amount which is less than 0");
+
+			}
+		else
+		{
+			LocalDate date=LocalDate.now();
+			LocalTime time=LocalTime.now();
+			WithDrawOperation withDrawOperation=new WithDrawOperation(date,time,amount,account);
+			operationsRepository.save(withDrawOperation);
+			Statement statement=new Statement("Deposited",amount, account.getBalance()-amount, date, account,time);
+			statementRepository.save(statement);
+
+			account.setBalance(account.getBalance()-amount);
+			accountRepository.save(account);
+		}
+		}
+
+
+		public List<Statement> getAccountStatement(long id)
+		{
+			LocalDate todayDate=LocalDate.now();
+               Account account=accountRepository.findByAID(id);
+               List<Statement> prime=statementRepository.findByAccountStatement_AID(id);
+               List<Statement>statementList=account.getStatements();
+               List<Statement> finalStatement=new ArrayList<>();
+               for(Statement st:statementList)
+			   {
+			   	if(st.getDate().equals(todayDate))
+				{
+					finalStatement.add(st);
+				}
+			   }
+               return prime;
+		}
 	
 }

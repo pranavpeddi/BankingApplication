@@ -68,10 +68,13 @@ public class Account {
 	public void setOperations(List<Operations> operations) {
 		this.operations = operations;
 	}
-    
-    
-    
-    
-	
 
+
+	public List<Statement> getStatements() {
+		return statements;
+	}
+
+	public void setStatements(List<Statement> statements) {
+		this.statements = statements;
+	}
 }

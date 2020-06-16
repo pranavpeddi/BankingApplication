@@ -86,21 +86,22 @@ public class BankingService {
 			Account account1=accountRepository.findByAID(fromId);
 			LocalDate date=LocalDate.now();
 			LocalTime time=LocalTime.now();
-			WithDrawOperation withDrawOperation=new WithDrawOperation(date, time,amount,account1);
-			operationsRepository.save(withDrawOperation);
-			Statement st1=new Statement("Transfered", amount, account1.getBalance()-amount, date, account1,time);
-			account1.setBalance(account1.getBalance()-amount);
-			statementRepository.save(st1);
-			accountRepository.save(account1);
-			Account account2=accountRepository.findByAID(toId);
-			DepositOperation depositOperation=new DepositOperation(date,time,amount,account2);
-			operationsRepository.save(depositOperation);
-			Statement st2=new Statement("Credited", amount, account2.getBalance()+amount, date, account2,time);
-			statementRepository.save(st2);
-			account2.setBalance(account2.getBalance()+amount);
-			accountRepository.save(account2);
-			return "transfered successfully";
-			
+			if(account1.getBalance()>0) {
+				WithDrawOperation withDrawOperation = new WithDrawOperation(date, time, amount, account1);
+				operationsRepository.save(withDrawOperation);
+				Statement st1 = new Statement("Transfered", amount, account1.getBalance() - amount, date, account1, time);
+				account1.setBalance(account1.getBalance() - amount);
+				statementRepository.save(st1);
+				accountRepository.save(account1);
+				Account account2 = accountRepository.findByAID(toId);
+				DepositOperation depositOperation = new DepositOperation(date, time, amount, account2);
+				operationsRepository.save(depositOperation);
+				Statement st2 = new Statement("Credited", amount, account2.getBalance() + amount, date, account2, time);
+				statementRepository.save(st2);
+				account2.setBalance(account2.getBalance() + amount);
+				accountRepository.save(account2);
+				return "transfered successfully";
+			}
 		}
 		
 		return "null";
@@ -143,7 +144,11 @@ public class BankingService {
 					finalStatement.add(st);
 				}
 			   }
+
+               prime.stream().forEach(t->System.out.println(t));
                return prime;
 		}
+
+
 	
 }

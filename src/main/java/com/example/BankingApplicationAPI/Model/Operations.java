@@ -2,6 +2,7 @@ package com.example.BankingApplicationAPI.Model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -79,9 +80,32 @@ public class Operations {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	
-	
-	
-	
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Operations that = (Operations) o;
+		return OID == that.OID &&
+				Double.compare(that.balance, balance) == 0 &&
+				Objects.equals(date, that.date) &&
+				Objects.equals(time, that.time) &&
+				Objects.equals(account, that.account);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(OID, date, time, balance, account);
+	}
+
+//	@Override
+//	public String toString() {
+//		return "Operations{" +
+//				"OID=" + OID +
+//				", date=" + date +
+//				", time=" + time +
+//				", balance=" + balance +
+//				", account=" + account +
+//				'}';
+//	}
 }

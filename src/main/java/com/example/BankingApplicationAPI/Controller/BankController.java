@@ -2,6 +2,8 @@ package com.example.BankingApplicationAPI.Controller;
 
 import com.example.BankingApplicationAPI.Model.Statement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.BankingApplicationAPI.Model.Account;
@@ -50,8 +52,10 @@ public class BankController {
 	}
 
 	@GetMapping("/statement/{id}")
-	public List<Statement> getStatement(@RequestParam long id)
+	public ResponseEntity<?> getStatement(@RequestParam long id) throws Exception
 	{
-		return bankingService.getAccountStatement(id);
+
+
+		return new ResponseEntity<Object>(bankingService.getAccountStatement(id), HttpStatus.OK);
 	}
 }

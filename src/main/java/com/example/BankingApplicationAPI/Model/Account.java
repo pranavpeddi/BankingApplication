@@ -64,9 +64,9 @@ public class Account {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	public List<Operations> getOperations() {
-		return operations;
-	}
+//	public List<Operations> getOperations() {
+	//	return operations;
+	//}
 	public void setOperations(List<Operations> operations) {
 		this.operations = operations;
 	}

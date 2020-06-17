@@ -51,7 +51,7 @@ public class BankController {
 		return "success";
 	}
 
-	@GetMapping("/statement/{id}")
+	@GetMapping("/statement/{id}/")
 	public ResponseEntity<?> getStatement(@RequestParam long id) throws Exception
 	{
 

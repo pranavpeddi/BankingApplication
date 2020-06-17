@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.sun.org.apache.bcel.internal.generic.ATHROW;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +131,7 @@ public class BankingService {
 		}
 
 
-		public List<Statement> getAccountStatement(long id)
+		public List<Statement> getAccountStatemensfsfst(long id)
 		{
 			LocalDate todayDate=LocalDate.now();
                Account account=accountRepository.findByAID(id);
@@ -145,10 +146,15 @@ public class BankingService {
 				}
 			   }
 
-               prime.stream().forEach(t->System.out.println(t));
-               return prime;
+
+               return statementList;
 		}
 
+     public List<Map<String,Object>> getAccountStatement(long aid)
+	 {
 
-	
+
+	 	return statementRepository.getStatementByAccountStatement_AID(aid);
+
+	 }
 }
